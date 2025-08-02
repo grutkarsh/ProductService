@@ -1,14 +1,15 @@
 package com.tcs.productService.controller;
 
+import com.tcs.productService.entity.Product;
 import com.tcs.productService.model.ProductRequest;
+import com.tcs.productService.model.ProductResponse;
 import com.tcs.productService.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/product")
@@ -22,5 +23,12 @@ public class ProductController {
     {
        long productID= productService.addProduct(productRequest);
        return new ResponseEntity<>(productID, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id)
+    {
+       ProductResponse productResponse= productService.getProductById(id);
+        return new ResponseEntity<>(productResponse,HttpStatus.OK);
     }
 }

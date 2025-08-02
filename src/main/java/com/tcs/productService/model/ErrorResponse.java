@@ -1,17 +1,17 @@
 package com.tcs.productService.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductRequest {
+@Builder
+public class ErrorResponse {
 
-
-    private String productName;
-    private long price;
-    private long quantity;
+    private String errorMessage;
+    private String errorCode;
 
 }
