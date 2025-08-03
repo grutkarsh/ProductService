@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Log4j2
 public class ProductServiceImpl implements ProductService {
@@ -39,5 +41,23 @@ public class ProductServiceImpl implements ProductService {
                 .quantity(product.getQuantity())
                 .productId(product.getProductId())
                 .build();
+    }
+
+    @Override
+    public void reduceQuantity(Long productId, long quantity) {
+
+        log.info("reduced quantity {} for productID {} ",quantity,productId);
+        Product product = productRepository
+                .findById(productId)
+                .orElseThrow(() -> new ProductServiceCustomException("pdid not found ", HttpStatus.NOT_FOUND.toString()));
+
+        if(product.getQuantity() <quantity)
+        {
+            throw new ProductServiceCustomException("Available quantity is less than required","INCORRECT_QUNATITY");
+        }
+        long netQuantity= product.getQuantity()-quantity;
+        product.setQuantity(netQuantity);
+        productRepository.save(product);
+
     }
 }
